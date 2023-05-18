@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
-public class HelloController {
+public class ParserController {
     @FXML
     private Label welcomeText;
 
@@ -34,6 +34,7 @@ public class HelloController {
 
     @FXML
     protected void onParseButtonClicked(ActionEvent event) {
+        // TODO: Use actual parser here
         outputTextArea.setText(inputTextArea.getText());
     }
 

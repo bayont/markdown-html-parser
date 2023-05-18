@@ -7,10 +7,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class ParserApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("parser-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ParserApplication.class.getResource("parser-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 640, 480);
         stage.setTitle("markdown-html-parser");
         stage.setScene(scene);
