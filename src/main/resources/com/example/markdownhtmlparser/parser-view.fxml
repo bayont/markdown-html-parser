@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="TOP_CENTER" prefHeight="679.0" prefWidth="839.0" spacing="10.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.markdownhtmlparser.HelloController">
+<VBox alignment="CENTER" prefHeight="679.0" prefWidth="839.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.markdownhtmlparser.HelloController">
     <padding>
-        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
 
     <Label fx:id="welcomeText">
@@ -15,14 +15,17 @@
          <Font name="System Bold" size="18.0" />
       </font>
     </Label>
-    <Button fx:id="switchButton" text="Switch Parser mode" onAction="#onSwitchParserModeButtonClicked"/>
+    <Button fx:id="switchButton" onAction="#onSwitchParserModeButtonClicked" text="Switch Parser mode" />
    <VBox prefHeight="200.0" prefWidth="100.0">
        <Label fx:id="inputLabel" />
        <TextArea fx:id="inputTextArea" prefHeight="108.0" prefWidth="599.0" />
    </VBox>
 
+    <Button fx:id="parseButton" onAction="#onParseButtonClicked" text="Parse" />
+
+
     <VBox prefHeight="200.0" prefWidth="100.0">
         <Label fx:id="outputLabel" />
-        <TextArea fx:id="outputText" prefHeight="108.0" prefWidth="599.0" />
+        <TextArea fx:id="outputTextArea" prefHeight="108.0" prefWidth="599.0" />
     </VBox>
 </VBox>

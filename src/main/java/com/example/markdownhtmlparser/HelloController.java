@@ -26,7 +26,15 @@ public class HelloController {
     @FXML
     protected void onSwitchParserModeButtonClicked(ActionEvent event) {
         parserMode = parserMode == ParserMode.HTML_TO_MARKDOWN ? ParserMode.MARKDOWN_TO_HTML : ParserMode.HTML_TO_MARKDOWN;
+        String temp = inputTextArea.getText();
+        inputTextArea.setText(outputTextArea.getText());
+        outputTextArea.setText(temp);
         evaluateLabels();
+    }
+
+    @FXML
+    protected void onParseButtonClicked(ActionEvent event) {
+        outputTextArea.setText(inputTextArea.getText());
     }
 
     @FXML
