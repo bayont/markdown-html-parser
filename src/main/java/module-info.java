@@ -9,4 +9,6 @@ module com.example.markdownhtmlparser {
 
     opens com.example.markdownhtmlparser to javafx.fxml;
     exports com.example.markdownhtmlparser;
+    exports com.example.markdownhtmlparser.io;
+    opens com.example.markdownhtmlparser.io to javafx.fxml;
 }

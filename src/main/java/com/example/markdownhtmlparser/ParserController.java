@@ -1,9 +1,13 @@
 package com.example.markdownhtmlparser;
 
+import com.example.markdownhtmlparser.io.ParserFile;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.stage.FileChooser;
+
+import java.io.*;
 
 public class ParserController {
     @FXML
@@ -36,6 +40,16 @@ public class ParserController {
     protected void onParseButtonClicked(ActionEvent event) {
         // TODO: Use actual parser here
         outputTextArea.setText(inputTextArea.getText());
+    }
+
+    @FXML
+    protected void onInputFileButtonClicked(ActionEvent event) {
+        inputTextArea.setText(ParserFile.readFromFile(pickFile()));
+    }
+
+    private File pickFile() {
+        FileChooser fileChooser = new FileChooser();
+        return fileChooser.showOpenDialog(ParserApplication.primaryStage);
     }
 
     @FXML
