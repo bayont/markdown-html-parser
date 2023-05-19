@@ -44,7 +44,10 @@ public class ParserController {
 
     @FXML
     protected void onInputFileButtonClicked(ActionEvent event) {
-        inputTextArea.setText(ParserFile.readFromFile(pickFile()));
+        try {
+            inputTextArea.setText(ParserFile.readFromFile(pickFile()));
+        } catch (IOException ignored) {
+        }
     }
 
     private File pickFile() {
