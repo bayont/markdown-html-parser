@@ -2,7 +2,7 @@ package com.example.markdownhtmlparser.io;
 
 import java.io.*;
 
-public class ParserFile {
+public class Files {
     public static String readFromFile(File file) throws IOException {
         if (file == null) throw new IOException("File is null");
         FileInputStream fileInputStream = new FileInputStream(file);;

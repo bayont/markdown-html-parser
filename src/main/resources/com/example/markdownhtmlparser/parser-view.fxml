@@ -20,8 +20,9 @@
        <HBox alignment="BASELINE_LEFT" spacing="20.0">
            <Label fx:id="inputLabel" />
            <Button fx:id="inputFileButton" onAction="#onInputFileButtonClicked" text="Load input from a file" />
-         <padding>
-            <Insets bottom="5.0" />
+           <Button fx:id="inputHttpButton" onAction="#onInputHttpButtonClicked" text="Load input from URL" />
+           <padding>
+             <Insets bottom="5.0" />
          </padding>
        </HBox>
        <TextArea fx:id="inputTextArea" prefHeight="108.0" prefWidth="599.0" />
