@@ -11,4 +11,10 @@ module com.example.markdownhtmlparser {
     exports com.example.markdownhtmlparser;
     exports com.example.markdownhtmlparser.io;
     opens com.example.markdownhtmlparser.io to javafx.fxml;
+    exports com.example.markdownhtmlparser.engine;
+    opens com.example.markdownhtmlparser.engine to javafx.fxml;
+    exports com.example.markdownhtmlparser.elements;
+    opens com.example.markdownhtmlparser.elements to javafx.fxml;
+    exports com.example.markdownhtmlparser.utils;
+    opens com.example.markdownhtmlparser.utils to javafx.fxml;
 }

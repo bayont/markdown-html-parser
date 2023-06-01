@@ -1,5 +1,10 @@
 package com.example.markdownhtmlparser;
 
+import com.example.markdownhtmlparser.elements.Element;
+import com.example.markdownhtmlparser.elements.ElementsList;
+import com.example.markdownhtmlparser.engine.HTMLEngine;
+import com.example.markdownhtmlparser.engine.MarkdownEngine;
+import com.example.markdownhtmlparser.engine.ParserEngine;
 import com.example.markdownhtmlparser.io.Files;
 import com.example.markdownhtmlparser.io.HttpClient;
 import javafx.event.ActionEvent;
@@ -11,7 +16,6 @@ import javafx.stage.FileChooser;
 
 import java.io.*;
 import java.net.URI;
-import java.net.URL;
 import java.util.Optional;
 
 public class ParserController {
@@ -49,7 +53,9 @@ public class ParserController {
     @FXML
     protected void onParseButtonClicked(ActionEvent event) {
         // TODO: Use actual parser here
-        outputTextArea.setText(inputTextArea.getText());
+        ParserEngine engine = parserMode == ParserMode.HTML_TO_MARKDOWN ? new HTMLEngine() : new MarkdownEngine();
+        ElementsList list = engine.parse(inputTextArea.getText());
+        outputTextArea.setText(parserMode == ParserMode.HTML_TO_MARKDOWN ? list.toMarkdown() : list.toHTML());
     }
 
     @FXML
