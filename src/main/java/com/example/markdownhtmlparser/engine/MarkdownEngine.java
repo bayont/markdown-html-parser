@@ -3,66 +3,54 @@ package com.example.markdownhtmlparser.engine;
 import com.example.markdownhtmlparser.elements.*;
 import com.example.markdownhtmlparser.elements.List;
 import com.example.markdownhtmlparser.exceptions.InvalidHeadingLevelException;
+import com.example.markdownhtmlparser.utils.RegexMatcher;
 
 import java.util.*;
 
 public class MarkdownEngine extends ParserEngine {
-    public ElementsList parse(String input) {
+    public ElementsList parse(String input) throws InvalidHeadingLevelException {
         LinkedList<String> lines = new LinkedList<String>(Arrays.asList(splitLines(input)));
         ElementsList elements = new ElementsList();
 
         while (!lines.isEmpty()) {
-           String line = lines.removeFirst();
-            if (line.startsWith("#")) {
-                try {
-                    elements.add(parseHeading(line));
-                } catch (InvalidHeadingLevelException e) {
-                    e.printStackTrace();
-                }
+           String line = lines.getFirst();
+            if (line.matches("^#{1,6} .*") && !line.matches("^#{7,} .*")) {
+                lines.removeFirst();
+                elements.add(parseHeading(line));
             }
-            if(line.startsWith("*")) {
-                String[] linesToProcess = getAllLinesWithPrefix("*", lines);
-                // @TODO: parse unordered list
+            else if(line.matches("^\\* .*")) {
+                String[] linesToProcess = getAllLinesWithPrefix("^\\* .*", lines);
+                elements.add(parseList(ListType.UNORDERED, linesToProcess));
             }
-        }
-        return elements;
-    }
-
-    /*
-
-    Wymyślić lepszy sposób na zorganizowanie fromMarkdown!
-     */
-
-    public static ElementsList recognizeInlineElements(String input) {
-        ElementsList elements = new ElementsList();
-        char[] chars = input.toCharArray();
-        for(int i = 0; i < chars.length; i++ ) {
-            if(chars[i] == '*') {
-                if(chars[i + 1] == '*') {
-                    int spottedIdx = i+2;
-                    elements.add(new BoldText(input.substring(spottedIdx, findClosingTagIndex(input.substring(spottedIdx), "**"))));
-                    i+=2;
-                } else {
-                    int spottedIdx = i+1;
-                    elements.add(new ItalicText(input.substring(spottedIdx, findClosingTagIndex(input.substring(spottedIdx), "*"))));
-                    i++;
-                }
+            else if(line.matches("^\\d+\\. .*")) {
+                String[] linesToProcess = getAllLinesWithPrefix("^\\d+\\. .*", lines);
+                elements.add(parseList(ListType.ORDERED, linesToProcess));
+            }
+            else if(line.matches("^\\| .*")) {
+                String[] linesToProcess = getAllLinesWithPrefix("^\\| .*", lines);
+                elements.add(parseTable(linesToProcess));
+            }
+            else if(line.matches("^> .*")) {
+                String[] linesToProcess = getAllLinesWithPrefix("^> .*", lines);
+                elements.add(parseBlockQuote(linesToProcess));
+            }
+            else if(line.matches("^```.*")) {
+                String language = line.substring(3);
+                String[] linesToProcess = getAllLinesUntilPrefix("^```.*", lines);
+                elements.add(parseCode(linesToProcess, language));
+            }
+            else if(line.matches("^---.*")) {
+                lines.removeFirst();
+                elements.add(parseHorizontalRule());
+            }
+            else if(line == "") {
+                //add paragraph
+                lines.removeFirst();
             }
         }
         return elements;
     }
 
-    public static int findClosingTagIndex(String input, String tag) {
-        int index = input.indexOf(tag);
-        if(index == -1) {
-            return -1;
-        }
-        return index + tag.length();
-    }
-
-    private List parseUnorderedList(ElementsList[] items) {
-        return new List(ListType.UNORDERED, items);
-    }
     private Heading parseHeading(String line) throws InvalidHeadingLevelException {
         int level = 0;
         while (line.charAt(level) == '#') {
@@ -71,17 +59,63 @@ public class MarkdownEngine extends ParserEngine {
         String content = line.substring(level + 1);
         return new Heading(level, content);
     }
+    private List parseList(ListType type, String[] lines) {
+        String[] strippedLines = Arrays.stream(lines).map(line -> type == ListType.UNORDERED ? line.substring(2) : line.substring(line.indexOf('.') + 2)).toArray(String[]::new);
+        return new List(type, strippedLines);
+    }
+    private Table parseTable(String[] lines) {
+        String[][] data = Arrays.stream(lines).map(line -> Arrays.stream(line.split("\\|")).filter(l -> l != "").map(l->l.trim()).toArray(String[]::new)).toArray(String[][]::new);
+        if(data[1][0].matches("---+")) {
+            data[1] = new String[]{};
+            return new Table(data, true);
+        }
+
+        return new Table(data, false);
+    }
+    private BlockQuote parseBlockQuote(String[] lines) {
+        String[] strippedLines = Arrays.stream(lines).map(line -> line.substring(2)).toArray(String[]::new);
+        return new BlockQuote(strippedLines);
+    }
+    private Code parseCode(String[] lines, String language) {
+        if(language == null) {
+            return new Code(lines);
+        }
+        return new Code(lines, language);
+    }
+    private HorizontalRule parseHorizontalRule() {
+        return new HorizontalRule();
+    }
     private String[] splitLines(String input) {
         return input.split("\n");
     }
 
-    private String[] getAllLinesWithPrefix(String prefix, LinkedList<String> lines) {
+    private String[] getAllLinesWithPrefix(String regex, LinkedList<String> lines) {
+
         ArrayList<String> linesWithPrefix = new ArrayList<String>();
-        for (String line : lines) {
-            if (line.startsWith(prefix)) {
+        String[] linesArr = lines.toArray(new String[lines.size()]);
+        for (String line : linesArr) {
+            if (line.matches(regex)) {
                 linesWithPrefix.add(line);
+                lines.removeFirst();
             }
             else break;
+        }
+        return linesWithPrefix.toArray(new String[linesWithPrefix.size()]);
+    }
+
+    private String[] getAllLinesUntilPrefix(String regex, LinkedList<String> lines) {
+        ArrayList<String> linesWithPrefix = new ArrayList<String>();
+        String[] linesArr = lines.toArray(new String[lines.size()]);
+        lines.removeFirst();
+        for (String line : linesArr) {
+            if (line.matches(regex)) {
+                lines.removeFirst();
+                break;
+            }
+            else {
+                linesWithPrefix.add(line);
+                lines.removeFirst();
+            }
         }
         return linesWithPrefix.toArray(new String[linesWithPrefix.size()]);
     }

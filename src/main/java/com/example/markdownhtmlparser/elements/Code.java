@@ -1,23 +1,24 @@
 package com.example.markdownhtmlparser.elements;
 
 public class Code extends Element{
-    private String text;
+    private String[] lines;
     private String language;
 
-    public Code(String text) {
-        this.text = text;
+    public Code(String[] lines) {
+        this.lines = lines;
+        this.language = "";
     }
 
-    public Code(String text, String language) {
-        this.text = text;
+    public Code(String[] lines, String language) {
+        this.lines = lines;
         this.language = language;
     }
 
     public String toHTML() {
-        return "<code>" + text + "</code>";
+        return "<code>" + String.join("\n<br />", lines) + "</code>";
     }
 
     public String toMarkdown() {
-        return "```" + language + "\n" + text + "\n```";
+        return "```" + language + "\n" + String.join("\n", lines) + "\n```";
     }
 }

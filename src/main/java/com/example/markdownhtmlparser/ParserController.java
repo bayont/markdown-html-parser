@@ -52,9 +52,18 @@ public class ParserController {
 
     @FXML
     protected void onParseButtonClicked(ActionEvent event) {
-        // TODO: Use actual parser here
         ParserEngine engine = parserMode == ParserMode.HTML_TO_MARKDOWN ? new HTMLEngine() : new MarkdownEngine();
-        ElementsList list = engine.parse(inputTextArea.getText());
+        ElementsList list;
+        try {
+            list = engine.parse(inputTextArea.getText());
+        } catch (Exception exception) {
+            outputTextArea.setText("Parsing failed!");
+            return;
+        }
+        if (list == null) {
+            outputTextArea.setText("Parsing failed!");
+            return;
+        }
         outputTextArea.setText(parserMode == ParserMode.HTML_TO_MARKDOWN ? list.toMarkdown() : list.toHTML());
     }
 

@@ -1,10 +1,10 @@
 package com.example.markdownhtmlparser.elements;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ElementsList extends ArrayList<Element> {
-
-
+    
     public String toHTML() {
         StringBuilder sb = new StringBuilder();
         for (Element element : this.stream().toList()) {
