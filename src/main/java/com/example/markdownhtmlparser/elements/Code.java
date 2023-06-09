@@ -1,6 +1,6 @@
 package com.example.markdownhtmlparser.elements;
 
-public class Code extends Element{
+public class Code implements Element{
     private String[] lines;
     private String language;
 

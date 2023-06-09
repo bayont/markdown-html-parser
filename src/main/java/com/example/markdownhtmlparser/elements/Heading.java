@@ -3,7 +3,7 @@ package com.example.markdownhtmlparser.elements;
 import com.example.markdownhtmlparser.exceptions.InvalidHeadingLevelException;
 import com.example.markdownhtmlparser.utils.ContentParser;
 
-public class Heading extends Element {
+public class Heading implements Element {
     int level;
     String content;
 

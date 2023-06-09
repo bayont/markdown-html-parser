@@ -1,6 +1,6 @@
 package com.example.markdownhtmlparser.elements;
 
-public class HorizontalRule extends Element {
+public class HorizontalRule implements Element {
     public String toHTML() {
         return "<hr />";
     }

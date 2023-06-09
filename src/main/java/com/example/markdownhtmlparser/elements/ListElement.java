@@ -2,7 +2,7 @@ package com.example.markdownhtmlparser.elements;
 
 import com.example.markdownhtmlparser.utils.ContentParser;
 
-public class ListElement extends Element {
+public class ListElement implements Element {
     ListElementType type;
     String[] lines;
 

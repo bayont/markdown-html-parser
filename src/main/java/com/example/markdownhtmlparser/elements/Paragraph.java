@@ -2,7 +2,7 @@ package com.example.markdownhtmlparser.elements;
 
 import com.example.markdownhtmlparser.utils.ContentParser;
 
-public class Paragraph extends Element{
+public class Paragraph implements Element{
     private String[] lines;
 
     public Paragraph(String[] lines) {

@@ -1,6 +1,6 @@
 package com.example.markdownhtmlparser.elements;
 
-public abstract class Element {
-    public abstract String toHTML();
-    public abstract String toMarkdown();
+public interface Element {
+    String toHTML();
+    String toMarkdown();
 }

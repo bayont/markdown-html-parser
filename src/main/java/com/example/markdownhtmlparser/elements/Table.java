@@ -2,7 +2,7 @@ package com.example.markdownhtmlparser.elements;
 
 import com.example.markdownhtmlparser.utils.ContentParser;
 
-public class Table extends Element {
+public class Table implements Element {
     String[][] data;
     boolean isFirstRowHeader;
 
