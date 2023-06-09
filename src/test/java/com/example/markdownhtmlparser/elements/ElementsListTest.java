@@ -25,7 +25,7 @@ class ElementsListTest {
         list.add(new HorizontalRule());
         list.add(new HorizontalRule());
         list.add(new ListElement(ListElementType.ORDERED,new String[]{"line1", "line2"}));
-        String expected = "\n---\n\n---\n\n---\n1. line1\n2. line2\n";
+        String expected = "---\n---\n---\n1. line1\n2. line2\n";
         String actual = list.toMarkdown();
         assertEquals(expected, actual);
 

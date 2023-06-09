@@ -9,7 +9,7 @@ class HorizontalRuleTest {
     @Test
     void toHTML() {
         HorizontalRule hr = new HorizontalRule();
-        String expected = "<hr />\n";
+        String expected = "<hr />";
         String actual = hr.toHTML();
         assertEquals(expected, actual);
     }
@@ -17,7 +17,7 @@ class HorizontalRuleTest {
     @Test
     void toMarkdown() {
         HorizontalRule hr = new HorizontalRule();
-        String expected = "\n---\n";
+        String expected = "---";
         String actual = hr.toMarkdown();
         assertEquals(expected, actual);
     }

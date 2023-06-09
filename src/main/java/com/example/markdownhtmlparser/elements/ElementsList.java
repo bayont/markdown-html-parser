@@ -8,7 +8,7 @@ public class ElementsList extends ArrayList<Element> {
     public String toHTML() {
         StringBuilder sb = new StringBuilder();
         for (Element element : this.stream().toList()) {
-            sb.append(element.toHTML());
+            sb.append(element.toHTML()).append("\n");
         }
         return sb.toString();
     }
@@ -16,7 +16,7 @@ public class ElementsList extends ArrayList<Element> {
     public String toMarkdown() {
         StringBuilder sb = new StringBuilder();
         for (Element element : this.stream().toList()) {
-            sb.append(element.toMarkdown());
+            sb.append(element.toMarkdown()).append("\n");
         }
         return sb.toString();
     }

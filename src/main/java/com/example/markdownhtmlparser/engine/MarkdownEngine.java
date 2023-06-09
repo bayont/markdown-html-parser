@@ -43,13 +43,18 @@ public class MarkdownEngine extends ParserEngine {
                 elements.add(parseHorizontalRule());
             }
             else if(line == "") {
-                //add paragraph
-                lines.removeFirst();
+                elements.add(parseParagraph(lines.removeFirst()));
+            }
+            else {
+                elements.add(parseParagraph(lines.removeFirst()));
             }
         }
         return elements;
     }
 
+    private Paragraph parseParagraph(String line) {
+        return new Paragraph(new String[]{line});
+    }
     private Heading parseHeading(String line) throws InvalidHeadingLevelException {
         int level = 0;
         while (line.charAt(level) == '#') {

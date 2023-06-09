@@ -107,7 +107,7 @@ public class HTMLEngine extends ParserEngine {
     }
 
     private Element parseParagraph(HTMLElement htmlElement) {
-        return new Paragraph(htmlElement.content.split("\n"));
+        return new Paragraph(new String[]{htmlElement.children.get(0).content.trim()});
     }
 
     private Element parseHeading(HTMLElement htmlElement, int i) throws InvalidHeadingLevelException {
@@ -127,6 +127,7 @@ public class HTMLEngine extends ParserEngine {
             hasMatch = true;
             String tag = (matcher.group(1) != null ? matcher.group(1) : matcher.group(3)).trim().split(" ")[0];
             if(Arrays.stream(INLINE_TAGS).anyMatch(tag::equals)) {
+                tag = "";
                 elements.add(new HTMLElement(tag, html));
                 continue;
             }

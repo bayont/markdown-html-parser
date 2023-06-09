@@ -36,7 +36,7 @@ public class ContentParser {
         if(input.matches(".*`.*`.*")) {
             input = input.replaceAll("`(.*?)`", "<code>$1</code>");
         }
-        if(input.matches(".*[^!]\\[.*\\]\\(.*\\).*")) {
+        if(input.matches("[^!]*\\[.*\\]\\(.*\\).*")) {
             input = input.replaceAll("(?<!!)\\[(.*?)\\]\\((.*?)\\)", "<a href=\"$2\">$1</a>");
         }
         if(input.matches(".*!\\[.*\\]\\(.*\\).*")) {

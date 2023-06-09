@@ -2,10 +2,10 @@ package com.example.markdownhtmlparser.elements;
 
 public class HorizontalRule extends Element {
     public String toHTML() {
-        return "<hr />\n";
+        return "<hr />";
     }
 
     public String toMarkdown() {
-        return "\n---\n";
+        return "---";
     }
 }

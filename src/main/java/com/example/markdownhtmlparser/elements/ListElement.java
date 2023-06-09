@@ -17,7 +17,7 @@ public class ListElement extends Element {
         for(String line : lines) {
             html.append("\t<li>").append(ContentParser.MarkdownToHTML(line)).append("</li>\n");
         }
-        html.append(type == ListElementType.ORDERED ? "</ol>\n" : "</ul>\n");
+        html.append(type == ListElementType.ORDERED ? "</ol>" : "</ul>");
         return html.toString();
     }
 
@@ -26,11 +26,17 @@ public class ListElement extends Element {
         StringBuilder markdown = new StringBuilder();
         if(type == ListElementType.ORDERED) {
             for (int i = 0; i < lines.length; i++) {
-                markdown.append(i + 1).append(". ").append(ContentParser.HTMLToMarkdown(lines[i])).append("\n");
+                markdown.append(i + 1).append(". ").append(ContentParser.HTMLToMarkdown(lines[i]));
+                if(i != lines.length - 1) {
+                    markdown.append("\n");
+                }
             }
         } else {
-            for (String line : lines) {
-                markdown.append("* ").append(ContentParser.HTMLToMarkdown(line)).append("\n");
+            for (int i = 0; i < lines.length; i++) {
+                markdown.append("* ").append(ContentParser.HTMLToMarkdown(lines[i]));
+                if(i != lines.length - 1) {
+                    markdown.append("\n");
+                }
             }
         }
         return markdown.toString();

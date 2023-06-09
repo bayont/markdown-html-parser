@@ -1,5 +1,7 @@
 package com.example.markdownhtmlparser.elements;
 
+import com.example.markdownhtmlparser.utils.ContentParser;
+
 public class Paragraph extends Element{
     private String[] lines;
 
@@ -8,10 +10,10 @@ public class Paragraph extends Element{
     }
 
     public String toHTML() {
-        return "<p>" + String.join("\n<br />\n", lines) + "</p>";
+        return "<p>" + ContentParser.MarkdownToHTML(String.join("\n<br />\n", lines)) + "</p>";
     }
 
     public String toMarkdown() {
-        return String.join("\n", lines) + "\n";
+        return ContentParser.HTMLToMarkdown(String.join("\n", lines)) + "\n";
     }
 }

@@ -22,7 +22,7 @@ public class HTMLValidator extends Validator {
             if (tag.contains(">")) {
                 String[] tagParts = tag.split(">")[0].split(" ");
                 if (tagParts.length > 1) {
-                    String[] attributes = Arrays.stream(Arrays.copyOfRange(tagParts, 1, tagParts.length)).filter(s -> !s.equals("/")).toArray(String[]::new);
+                    String[] attributes = Arrays.stream(Arrays.copyOfRange(tagParts, 1, tagParts.length)).map(s -> s.replaceAll("/", "")).toArray(String[]::new);
                     for (String attribute : attributes) {
                         if (attribute.contains("=")) {
                             String[] attributeParts = attribute.split("=");
