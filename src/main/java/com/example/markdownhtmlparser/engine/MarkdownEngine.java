@@ -8,7 +8,7 @@ import java.util.*;
 
 public class MarkdownEngine extends ParserEngine {
     public ElementsList parse(String input) throws InvalidHeadingLevelException {
-        LinkedList<String> lines = new LinkedList<String>(Arrays.asList(splitLines(input)));
+        LinkedList<String> lines = new LinkedList<>(Arrays.asList(splitLines(input)));
         ElementsList elements = new ElementsList();
 
         while (!lines.isEmpty()) {
@@ -19,6 +19,10 @@ public class MarkdownEngine extends ParserEngine {
             }
             else if(line.matches("^\\* .*")) {
                 String[] linesToProcess = getAllLinesWithPrefix("^\\* .*", lines);
+                elements.add(parseList(ListElementType.UNORDERED, linesToProcess));
+            }
+            else if(line.matches("^- .*")) {
+                String[] linesToProcess = getAllLinesWithPrefix("^\\- .*", lines);
                 elements.add(parseList(ListElementType.UNORDERED, linesToProcess));
             }
             else if(line.matches("^\\d+\\. .*")) {
@@ -42,8 +46,8 @@ public class MarkdownEngine extends ParserEngine {
                 lines.removeFirst();
                 elements.add(parseHorizontalRule());
             }
-            else if(line == "") {
-                elements.add(parseParagraph(lines.removeFirst()));
+            else if(line.equals("")) {
+                lines.removeFirst();
             }
             else {
                 elements.add(parseParagraph(lines.removeFirst()));
@@ -68,7 +72,7 @@ public class MarkdownEngine extends ParserEngine {
         return new ListElement(type, strippedLines);
     }
     private Table parseTable(String[] lines) {
-        String[][] data = Arrays.stream(lines).map(line -> Arrays.stream(line.split("\\|")).filter(l -> l != "").map(l->l.trim()).toArray(String[]::new)).toArray(String[][]::new);
+        String[][] data = Arrays.stream(lines).map(line -> Arrays.stream(line.split("\\|")).filter(l -> !Objects.equals(l, "")).map(String::trim).toArray(String[]::new)).toArray(String[][]::new);
         if(data[1][0].matches("---+")) {
             data[1] = new String[]{};
             return new Table(data, true);
@@ -95,8 +99,8 @@ public class MarkdownEngine extends ParserEngine {
 
     private String[] getAllLinesWithPrefix(String regex, LinkedList<String> lines) {
 
-        ArrayList<String> linesWithPrefix = new ArrayList<String>();
-        String[] linesArr = lines.toArray(new String[lines.size()]);
+        ArrayList<String> linesWithPrefix = new ArrayList<>();
+        String[] linesArr = lines.toArray(new String[0]);
         for (String line : linesArr) {
             if (line.matches(regex)) {
                 linesWithPrefix.add(line);
@@ -104,12 +108,12 @@ public class MarkdownEngine extends ParserEngine {
             }
             else break;
         }
-        return linesWithPrefix.toArray(new String[linesWithPrefix.size()]);
+        return linesWithPrefix.toArray(new String[0]);
     }
 
     private String[] getAllLinesUntilPrefix(String regex, LinkedList<String> lines) {
-        ArrayList<String> linesWithPrefix = new ArrayList<String>();
-        String[] linesArr = lines.toArray(new String[lines.size()]);
+        ArrayList<String> linesWithPrefix = new ArrayList<>();
+        String[] linesArr = lines.toArray(new String[0]);
         lines.removeFirst();
         for (String line : linesArr) {
             if (line.matches(regex)) {
@@ -121,7 +125,7 @@ public class MarkdownEngine extends ParserEngine {
                 lines.removeFirst();
             }
         }
-        return linesWithPrefix.toArray(new String[linesWithPrefix.size()]);
+        return linesWithPrefix.toArray(new String[0]);
     }
 
 }

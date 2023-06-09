@@ -107,7 +107,7 @@ public class HTMLEngine extends ParserEngine {
     }
 
     private Element parseParagraph(HTMLElement htmlElement) {
-        return new Paragraph(new String[]{htmlElement.children.get(0).content.trim()});
+        return new Paragraph(new String[]{htmlElement.children != null ? htmlElement.children.get(0).content.trim() : htmlElement.content.trim()});
     }
 
     private Element parseHeading(HTMLElement htmlElement, int i) throws InvalidHeadingLevelException {

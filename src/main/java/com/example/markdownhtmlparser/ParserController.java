@@ -91,6 +91,9 @@ public class ParserController {
         } catch (IOException exception) {
             inputTextArea.setText("Loading from URL failed!");
         }
+        catch (Exception exception) {
+            inputTextArea.setText("Invalid URL!");
+        }
     }
 
     private File pickFile() {
