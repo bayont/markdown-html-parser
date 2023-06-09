@@ -15,7 +15,7 @@ public class Code extends Element{
     }
 
     public String toHTML() {
-        return "<code>" + String.join("\n<br />", lines) + "</code>";
+        return "<code>" + String.join("\n<br />\n", lines) + "</code>";
     }
 
     public String toMarkdown() {

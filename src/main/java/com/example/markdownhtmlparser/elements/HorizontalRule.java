@@ -6,6 +6,6 @@ public class HorizontalRule extends Element {
     }
 
     public String toMarkdown() {
-        return "---\n";
+        return "\n---\n";
     }
 }

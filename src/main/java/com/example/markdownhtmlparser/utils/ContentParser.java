@@ -11,11 +11,17 @@ public class ContentParser {
         if(input.matches(".*<code>.*</code>.*")) {
             input = input.replaceAll("<code>(.*)</code>", "`$1`");
         }
-        if(input.matches(".*<a href=\"(.*)\">(.*)</a>.*")) {
-            input = input.replaceAll("<a href=\"(.*)\">(.*)</a>", "[$2]($1)");
+        if(input.matches(".*<a href=\"([^<>]*)\">([^<>]*)</a>.*")) {
+            input = input.replaceAll("<a href=\"([^<>]*)\">([^<>]*)</a>", "[$2]($1)");
+        }
+        if(input.matches(".*<a href=\"([^<>]*)\".*/>.*")) {
+            input = input.replaceAll("<a href=\"([^<>]*)\".*/>", "[]($1)");
         }
         if(input.matches(".*<img src=\"(.*)\" alt=\"(.*)\" />.*")) {
             input = input.replaceAll("<img src=\"(.*)\" alt=\"(.*)\" />", "![$2]($1)");
+        }
+        if(input.matches(".*<img src=\"(.*)\".*/>.*")) {
+            input = input.replaceAll("<img src=\"(.*)\".*/>", "![]($1)");
         }
         return input;
     }
@@ -30,8 +36,8 @@ public class ContentParser {
         if(input.matches(".*`.*`.*")) {
             input = input.replaceAll("`(.*?)`", "<code>$1</code>");
         }
-        if(input.matches(".*\\[.*\\]\\(.*\\).*")) {
-            input = input.replaceAll("\\[(.*?)\\]\\((.*?)\\)", "<a href=\"$2\">$1</a>");
+        if(input.matches(".*[^!]\\[.*\\]\\(.*\\).*")) {
+            input = input.replaceAll("(?<!!)\\[(.*?)\\]\\((.*?)\\)", "<a href=\"$2\">$1</a>");
         }
         if(input.matches(".*!\\[.*\\]\\(.*\\).*")) {
             input = input.replaceAll("!\\[(.*?)\\]\\((.*?)\\)", "<img src=\"$2\" alt=\"$1\" />");

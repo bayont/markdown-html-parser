@@ -14,7 +14,11 @@ public class BlockQuote extends Element {
     }
 
     public String toMarkdown() {
+        String[] newLines = new String[lines.length];
+        for (int i = 0; i < lines.length; i++) {
+            newLines[i] = "> " + lines[i];
+        }
 
-        return ContentParser.HTMLToMarkdown(String.join("\n> "));
+        return ContentParser.HTMLToMarkdown(String.join("\n", newLines));
     }
 }

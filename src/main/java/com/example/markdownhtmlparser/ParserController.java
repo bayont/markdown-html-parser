@@ -1,22 +1,22 @@
 package com.example.markdownhtmlparser;
 
-import com.example.markdownhtmlparser.elements.Element;
 import com.example.markdownhtmlparser.elements.ElementsList;
 import com.example.markdownhtmlparser.engine.HTMLEngine;
 import com.example.markdownhtmlparser.engine.MarkdownEngine;
 import com.example.markdownhtmlparser.engine.ParserEngine;
 import com.example.markdownhtmlparser.io.Files;
 import com.example.markdownhtmlparser.io.HttpClient;
-import javafx.event.ActionEvent;
+import com.example.markdownhtmlparser.validation.html.HTMLValidator;
+import com.example.markdownhtmlparser.validation.markdown.MarkdownValidator;
+import com.example.markdownhtmlparser.validation.Validator;
+import com.example.markdownhtmlparser.validation.ValidatorError;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
-
 import java.io.*;
 import java.net.URI;
-import java.util.Optional;
+
 
 public class ParserController {
     @FXML
@@ -42,7 +42,7 @@ public class ParserController {
     }
 
     @FXML
-    protected void onSwitchParserModeButtonClicked(ActionEvent event) {
+    protected void onSwitchParserModeButtonClicked() {
         parserMode = parserMode == ParserMode.HTML_TO_MARKDOWN ? ParserMode.MARKDOWN_TO_HTML : ParserMode.HTML_TO_MARKDOWN;
         String temp = inputTextArea.getText();
         inputTextArea.setText(outputTextArea.getText());
@@ -51,12 +51,18 @@ public class ParserController {
     }
 
     @FXML
-    protected void onParseButtonClicked(ActionEvent event) {
+    protected void onParseButtonClicked() {
         ParserEngine engine = parserMode == ParserMode.HTML_TO_MARKDOWN ? new HTMLEngine() : new MarkdownEngine();
+        Validator validator = parserMode == ParserMode.HTML_TO_MARKDOWN ? new HTMLValidator() : new MarkdownValidator();
         ElementsList list;
         try {
-            list = engine.parse(inputTextArea.getText());
-        } catch (Exception exception) {
+            list = engine.parse(validator.validate(inputTextArea.getText()));
+        }
+        catch (ValidatorError error) {
+            outputTextArea.setText(error.getMessage());
+            return;
+        }
+        catch (Exception exception) {
             outputTextArea.setText("Parsing failed!");
             return;
         }
@@ -68,7 +74,7 @@ public class ParserController {
     }
 
     @FXML
-    protected void onInputFileButtonClicked(ActionEvent event) {
+    protected void onInputFileButtonClicked() {
         try {
             inputTextArea.setText(Files.readFromFile(pickFile()));
         } catch (IOException exception) {
@@ -77,7 +83,7 @@ public class ParserController {
     }
 
     @FXML
-    protected void onInputHttpButtonClicked(ActionEvent event) {
+    protected void onInputHttpButtonClicked() {
         InputURLDialog dialog = new InputURLDialog();
         String result = dialog.open("Load from URL", "Load " + (this.parserMode == ParserMode.HTML_TO_MARKDOWN ? "HTML" : "Markdown") + " from URL", "URL:");
         try {
@@ -91,17 +97,6 @@ public class ParserController {
         FileChooser fileChooser = new FileChooser();
         return fileChooser.showOpenDialog(ParserApplication.primaryStage);
     }
-
-    private String getURLFromDialog() {
-        TextInputDialog dialog = new TextInputDialog("walter");
-        dialog.setTitle("Load from URL");
-        dialog.setHeaderText("Look, a Text Input Dialog");
-        dialog.setContentText("Url:");
-        Optional<String> result = dialog.showAndWait();
-
-        return result.orElse("");
-    }
-
 
     private void evaluateLabels() {
         if(parserMode == ParserMode.HTML_TO_MARKDOWN) {

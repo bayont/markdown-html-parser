@@ -1,9 +1,8 @@
 package com.example.markdownhtmlparser.engine;
 
 import com.example.markdownhtmlparser.elements.*;
-import com.example.markdownhtmlparser.elements.List;
+import com.example.markdownhtmlparser.elements.ListElement;
 import com.example.markdownhtmlparser.exceptions.InvalidHeadingLevelException;
-import com.example.markdownhtmlparser.utils.RegexMatcher;
 
 import java.util.*;
 
@@ -20,11 +19,11 @@ public class MarkdownEngine extends ParserEngine {
             }
             else if(line.matches("^\\* .*")) {
                 String[] linesToProcess = getAllLinesWithPrefix("^\\* .*", lines);
-                elements.add(parseList(ListType.UNORDERED, linesToProcess));
+                elements.add(parseList(ListElementType.UNORDERED, linesToProcess));
             }
             else if(line.matches("^\\d+\\. .*")) {
                 String[] linesToProcess = getAllLinesWithPrefix("^\\d+\\. .*", lines);
-                elements.add(parseList(ListType.ORDERED, linesToProcess));
+                elements.add(parseList(ListElementType.ORDERED, linesToProcess));
             }
             else if(line.matches("^\\| .*")) {
                 String[] linesToProcess = getAllLinesWithPrefix("^\\| .*", lines);
@@ -59,9 +58,9 @@ public class MarkdownEngine extends ParserEngine {
         String content = line.substring(level + 1);
         return new Heading(level, content);
     }
-    private List parseList(ListType type, String[] lines) {
-        String[] strippedLines = Arrays.stream(lines).map(line -> type == ListType.UNORDERED ? line.substring(2) : line.substring(line.indexOf('.') + 2)).toArray(String[]::new);
-        return new List(type, strippedLines);
+    private ListElement parseList(ListElementType type, String[] lines) {
+        String[] strippedLines = Arrays.stream(lines).map(line -> type == ListElementType.UNORDERED ? line.substring(2) : line.substring(line.indexOf('.') + 2)).toArray(String[]::new);
+        return new ListElement(type, strippedLines);
     }
     private Table parseTable(String[] lines) {
         String[][] data = Arrays.stream(lines).map(line -> Arrays.stream(line.split("\\|")).filter(l -> l != "").map(l->l.trim()).toArray(String[]::new)).toArray(String[][]::new);

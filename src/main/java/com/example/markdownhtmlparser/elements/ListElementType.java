@@ -1,6 +1,6 @@
 package com.example.markdownhtmlparser.elements;
 
-public enum ListType {
+public enum ListElementType {
     ORDERED,
     UNORDERED
 }
